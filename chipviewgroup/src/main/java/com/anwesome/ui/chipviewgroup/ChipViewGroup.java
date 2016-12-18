@@ -18,7 +18,7 @@ public class ChipViewGroup extends ViewGroup {
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private List<ChipComponent> chipComponents = new ArrayList<>();
     private boolean measured = false,laidOut = false;
-    private int midY = 100,widthBound;
+    private int midY = 0,widthBound;
     public ChipViewGroup(Context context) {
         super(context);
         paint.setTextSize(AppConstants.FONT_SIZE);
@@ -33,9 +33,9 @@ public class ChipViewGroup extends ViewGroup {
         Point size = new Point();
         display.getRealSize(size);
         int screenWidth = size.x;
-        int screenHeight = size.y;
+        int screenHeight = getChipGroupHeight(screenWidth);
         widthBound = screenWidth;
-        midY = screenHeight/3;
+        midY = screenHeight/10;
         if(!measured) {
             for (ChipComponent chipComponent : chipComponents) {
                 addView(new ChipView(getContext(), chipComponent), new ViewGroup.LayoutParams((int) chipComponent.getWidth(), (int) chipComponent.getHeight()));
@@ -48,6 +48,21 @@ public class ChipViewGroup extends ViewGroup {
 
         }
         setMeasuredDimension(screenWidth,screenHeight);
+    }
+    private int getChipGroupHeight(int screenWidth) {
+        int x = 0,h = 0,i=0;
+        for(ChipComponent chipComponent:chipComponents) {
+            if(i==0) {
+                h = h+(int)chipComponent.getHeight();
+            }
+            x = x+(int)chipComponent.getWidth();
+            if(x+chipComponent.getWidth()>screenWidth) {
+                h = h+(int)chipComponent.getHeight();
+                x = 0;
+            }
+            i++;
+        }
+        return (3*h)/2;
     }
     public void onLayout(boolean changed,int w,int h,int a,int b) {
         int x = 0,y = midY-AppConstants.FONT_SIZE/2;

@@ -37,7 +37,7 @@ public class ChipComponent {
     }
 
     public void draw(Canvas canvas, Paint paint) {
-        paint.setColor(Color.GRAY);
+        paint.setColor(AppConstants.CHIP_COLOR);
         float radius = width/5;
         canvas.drawRoundRect(new RectF(0,0,width,height),radius,radius,paint);
         canvas.save();
@@ -48,7 +48,7 @@ public class ChipComponent {
         canvas.clipPath(path);
         canvas.drawBitmap(bitmap,new Rect(0,0,bitmap.getWidth(),bitmap.getHeight()),new RectF(0,0,height,height),paint);
         canvas.restore();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         canvas.drawText(title,height+2,height/2+3*height/10,paint);
         canvas.restore();
 
